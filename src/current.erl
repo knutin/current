@@ -388,9 +388,6 @@ update_query(Request, Key, Value) ->
 
 -spec retry(target(), request(), [any()]) -> {ok, _} | {error, _}.
 retry(Op, Request, Opts) ->
-    error_logger:info_msg("request: ~p~n", [Request]),
-    error_logger:info_msg("request: ~p~n", [application:get_env(current)]),
-
     Body = encode_body(Op, Request),
     case proplists:is_defined(no_retry, Opts) of
         true ->
