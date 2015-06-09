@@ -388,6 +388,9 @@ update_query(Request, Key, Value) ->
 
 -spec retry(target(), request(), [any()]) -> {ok, _} | {error, _}.
 retry(Op, Request, Opts) ->
+    error_logger:info_msg("request: ~p~n", [Request]),
+    error_logger:info_msg("request: ~p~n", [application:get_env(current)]),
+
     Body = encode_body(Op, Request),
     case proplists:is_defined(no_retry, Opts) of
         true ->
@@ -589,7 +592,8 @@ should_retry({Code, _}) when Code < 500                         -> false;
 should_retry(timeout)                                           -> true;
 should_retry(claim_timeout)                                     -> true;
 should_retry(busy)                                              -> true;
-should_retry(max_concurrency)                                   -> true.
+should_retry(max_concurrency)                                   -> true;
+should_retry(econnrefused)                                      -> true.
 
 
 
